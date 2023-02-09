@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Text,
   View,
@@ -24,6 +24,7 @@ const home = ({ navigation }) => {
         'The famous greek salad of crispy lettuce poppers olives and our chicag..',
       price: '$12.99',
       imgProduct: require('../assets/pImg1.png'),
+      categoryID: 1,
     },
     {
       id: 2,
@@ -32,6 +33,7 @@ const home = ({ navigation }) => {
         'Our Brushetta is made from grilled bread that has been seeared with garli..',
       price: '$7.99',
       imgProduct: require('../assets/pImg2.png'),
+      categoryID: 1,
     },
     {
       id: 3,
@@ -40,6 +42,7 @@ const home = ({ navigation }) => {
         'Barbequed catch of the day with red onion crisp capers chive creme fraiche..',
       price: '$20.00',
       imgProduct: require('../assets/pImg3.png'),
+      categoryID: 2,
     },
     {
       id: 4,
@@ -48,6 +51,7 @@ const home = ({ navigation }) => {
         'Penne with fried aubergines tomato sauce fresh chilli garlic basil & salted..',
       price: '$18.99',
       imgProduct: require('../assets/pImg4.png'),
+      categoryID: 2,
     },
     {
       id: 5,
@@ -56,6 +60,16 @@ const home = ({ navigation }) => {
         'Light and fluffy traditional homemade italian lemon and ricotta cake..',
       price: '$6.99',
       imgProduct: require('../assets/pImg5.png'),
+      categoryID: 3,
+    },
+    {
+      id: 6,
+      title: 'Pizza',
+      description:
+        'Light and fluffy traditional homemade Pizza and ricotta cake..',
+      price: '$7.99',
+      imgProduct: require('../assets/pImg3.png'),
+      categoryID: 4,
     },
   ]);
 
@@ -84,6 +98,25 @@ const home = ({ navigation }) => {
       setSearch(text);
     }
   };
+
+  const [categoryID, setcategoryID] = useState('NONE');
+
+  // const filteredList = useMemo(() => {
+  //   if (categoryID === 'NONE') return menulist;
+  //   return menulist.filter((item) => categoryID === item.categoryID);
+  // }, [categoryID, menulist]);
+
+  function filterArray(array, status) {
+    return array.filter((item) => item.categoryID === status);
+  }
+
+  const onClick = (categoryID) => () => {
+    setcategoryID(categoryID);
+    setfilterData(statusOneArray);
+  };
+
+  const statusOneArray = filterArray(menulist, categoryID);
+  console.log(statusOneArray);
 
   useEffect(() => {
     setfilterData(menulist);
@@ -132,32 +165,16 @@ const home = ({ navigation }) => {
         <View style={styles.homeContentView}>
           <Text style={styles.homeContentViewTitle}>Order for Delivery</Text>
           <View style={styles.homeTabView}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('tab1');
-              }}
-              style={styles.homeTabBtn}>
+            <TouchableOpacity onPress={onClick(1)} style={styles.homeTabBtn}>
               <Text style={styles.homeTabBtntxt}>Starters</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('tab2');
-              }}
-              style={styles.homeTabBtn}>
+            <TouchableOpacity onPress={onClick(2)} style={styles.homeTabBtn}>
               <Text style={styles.homeTabBtntxt}>Mains</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('tab3');
-              }}
-              style={styles.homeTabBtn}>
+            <TouchableOpacity onPress={onClick(3)} style={styles.homeTabBtn}>
               <Text style={styles.homeTabBtntxt}>Desserts</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('tab4');
-              }}
-              style={styles.homeTabBtn}>
+            <TouchableOpacity onPress={onClick(4)} style={styles.homeTabBtn}>
               <Text style={styles.homeTabBtntxt}>Drinks</Text>
             </TouchableOpacity>
           </View>
